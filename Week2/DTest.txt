@@ -1,0 +1,4 @@
+6
+2
+1 2 sun sun 
+2 5 moon earth
