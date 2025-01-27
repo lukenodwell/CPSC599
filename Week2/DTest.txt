@@ -1,4 +1,3 @@
-6
-2
-1 2 sun sun 
-2 5 moon earth
+4
+1
+1 2 sun sun

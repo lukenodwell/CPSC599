@@ -42,7 +42,10 @@ for card in list(face_down_cards):
                 break
 
 possible_pairs = 0
+# print((N - ((len(pairs) + matched_pairs) * 2)), len(unmatched_cards) * 2)
 if (N - ((len(pairs) + matched_pairs) * 2)) == len(unmatched_cards) * 2:
         possible_pairs = len(unmatched_cards)
+elif((N - ((len(pairs) + matched_pairs) * 2)) == 2):
+    possible_pairs += 1
 
 print(len(pairs) + possible_pairs)
