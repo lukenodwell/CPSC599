@@ -56,16 +56,20 @@ for i in range(1, len(bdayNums) + 1):
             time_to_october28 = temp_time_to_october28
 
 # Convert the largest_diff_index to a date
+
+fake_date = 0
+fake_month = 0
+
 for month_index in range(12):
     if start_of_month[month_index] <= largest_diff_index <= end_of_month[month_index]:
-        date_index = largest_diff_index - start_of_month[month_index] - 1 # Offset by 1
-        if date_index == 0:
-            month_index -= 1
-            if month_index == 0:
-                month_index = 11
-            date_index = end_of_month[month_index] - start_of_month[month_index]
-        month_index += 1
+        fake_date = largest_diff_index - start_of_month[month_index] - 1 # Offset by 1
+        fake_month = month_index + 1
+        if fake_date == 0:
+            fake_month -= 1
+            if fake_month == 0:
+                fake_month = 12
+            fake_date = end_of_month[month_index - 1] - start_of_month[month_index - 1]
         break
 
-formatted_date = f"{month_index:02d}-{date_index:02d}"
+formatted_date = f"{fake_month:02d}-{fake_date:02d}"
 print(formatted_date)
