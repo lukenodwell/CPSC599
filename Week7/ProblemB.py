@@ -1,39 +1,23 @@
-def min_switches(n, m, instruments, tune):
-    dp = [[float('inf')] * n for _ in range(m)]
-    
-    for i in range(n):
-        if tune[0] in instruments[i]:
-            dp[0][i] = 0
-    
-    for j in range(1, m):
-        for i in range(n):
-            if tune[j] in instruments[i]:
-                for k in range(n):
-                    if dp[j-1][k] != float('inf'):
-                        if i == k:
-                            dp[j][i] = min(dp[j][i], dp[j-1][k])
-                        else:
-                            dp[j][i] = min(dp[j][i], dp[j-1][k] + 1)
-    
-    result = min(dp[m-1])
-    return result
+n, m = map(int, input().split())
 
+notes = {}
 
-import sys
-input = sys.stdin.read
-data = input().split()
-    
-n = int(data[0])
-m = int(data[1])
-    
-instruments = []
-index = 2
-for _ in range(n):
-        k = int(data[index])
-        notes = list(map(int, data[index+1:index+1+k]))
-        instruments.append(notes)
-        index += k + 1
-    
-tune = list(map(int, data[index:index+m]))
-    
-print(min_switches(n, m, instruments, tune))
+for i in range(n):
+    this = [int(i) for i in input().split()][1::]
+    for a in this:
+        if a in notes:
+            notes[a].add(i)
+        else:
+            notes[a] = set()
+            notes[a].add(i)
+
+song = [int(i) for i in input().split()]
+instruments = set()
+changes = 0
+for note in song:
+    instruments = instruments.intersection(notes[note])
+    if len(instruments) == 0:
+        changes += 1
+        instruments = notes[note]
+
+print(changes-1)

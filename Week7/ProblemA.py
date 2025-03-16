@@ -1,39 +1,38 @@
 import sys
+input = sys.stdin.read
+data = input().split()
 
-def min_distance_to_destination(n, m, k, r, straightaways, curves):
-    # Initialize DP table with infinity
-    dp = [[float('inf')] * (m + 1) for _ in range(n)]
-    
-    # Base case: start at lane 1 on the first straightaway
-    dp[0][1] = 0
-    
-    # Fill the DP table for each straightaway
-    for i in range(n):
-        for j in range(1, m + 1):
-            if dp[i][j] != float('inf'):
-                # Consider lane changes within the same straightaway
-                for lane_change in range(-1, 2):
-                    new_lane = j + lane_change
-                    if 1 <= new_lane <= m:
-                        dp[i][new_lane] = min(dp[i][new_lane], dp[i][j] + (k + r) * abs(lane_change))
-        
-        # Add the length of the current straightaway to the distance
-        for j in range(1, m + 1):
-            dp[i][j] += straightaways[i]
-        
-        # If not the last straightaway, update for the next curve
-        if i < n - 1:
-            s, c = curves[i]
-            for j in range(1, m + 1):
-                dp[i + 1][j] = min(dp[i + 1][j], dp[i][j] + s + c * j)
-    
-    # The result is the minimum distance to reach lane 1 at the end of the last straightaway
-    return dp[n - 1][1]
+n = int(data[0])
+m = int(data[1])
+k = int(data[2])
+r = int(data[3])
 
-n, m = map(int, sys.stdin.readline().split())
-k, r = map(int, sys.stdin.readline().split())
+len_segments = [0] * (n + 1)
+S = [0] * n
+C = [0] * n
 
-straightaways = [int(sys.stdin.readline()) for _ in range(n)]
-curves = [tuple(map(int, sys.stdin.readline().split())) for _ in range(n - 1)]
+index = 4
+for i in range(1, n + 1):
+    len_segments[i] = int(data[index])
+    index += 1
 
-print(min_distance_to_destination(n, m, k, r, straightaways, curves))
+for i in range(1, n):
+    S[i] = int(data[index])
+    C[i] = int(data[index + 1])
+    index += 2
+
+inf = 10**17
+minDist = [[inf] * (m + 1) for _ in range(n + 1)]
+minDist[0][1] = 0
+
+for i in range(1, n + 1):
+    for j in range(1, m + 1):
+        maxLaneChanges = len_segments[i] // k
+        for l in range(max(1, j - maxLaneChanges), min(m, j + maxLaneChanges) + 1):
+            laneChanges = abs(l - j)
+            distCurve = 0
+            if i > 1:
+                distCurve = S[i - 1] + C[i - 1] * l
+            minDist[i][j] = min(minDist[i][j], laneChanges * (k + r) + len_segments[i] - laneChanges * k + distCurve + minDist[i - 1][l])
+
+print(minDist[n][1])
