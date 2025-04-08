@@ -15,13 +15,11 @@ def dfs(node, k, A):
 
 def deBruijn(n, k, A):
 	
-	seen.clear()
-	edges.clear()
 	startingNode = A[0] * (n - 1)
 	dfs(startingNode, k, A)
 	
 	S = ""
-        
+
 	l = int(math.pow(k, n))
 	for i in range(l):
 		S += A[edges[i]]
