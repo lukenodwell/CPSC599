@@ -27,9 +27,9 @@ def deBruijn(n, k, A):
 	S += startingNode
 	return S
 
-n = 3
+n = 2
 k = 2
-A = "01"
+A = "ab"
 
 print(deBruijn(n, k, A))
 
